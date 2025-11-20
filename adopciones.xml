@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="template_adopciones.xsl"?>
+
+<ProtectoraAdoptaDos>
+    <Parejas>
+        <Pareja id="p1">
+            <Persona1><Nombre>Ana</Nombre><Apellido>García</Apellido></Persona1>
+            <Persona2><Nombre>Luis</Nombre><Apellido>Martínez</Apellido></Persona2>
+        </Pareja>
+        <Pareja id="p2">
+            <Persona1><Nombre>Carlos</Nombre><Apellido>Sánchez</Apellido></Persona1>
+            <Persona2><Nombre>Elena</Nombre><Apellido>Ruiz</Apellido></Persona2>
+        </Pareja>
+    </Parejas>
+    <Animales>
+        <Animal id="a1">
+            <Nombre>Fido</Nombre>
+            <Especie>Perro</Especie>
+        </Animal>
+        <Animal id="a2">
+            <Nombre>Misi</Nombre>
+            <Especie>Gato</Especie>
+        </Animal>
+        <Animal id="a3">
+            <Nombre>Coco</Nombre>
+            <Especie>Perro</Especie>
+        </Animal>
+    </Animales>
+    <Adopciones>
+        <Adopcion>
+            <AnimalRef id_animal="a1"/>
+            <ParejaRef id_pareja="p2"/>
+            <FechaAdopcion>2024-10-15</FechaAdopcion>
+        </Adopcion>
+        <Adopcion>
+            <AnimalRef id_animal="a2"/>
+            <ParejaRef id_pareja="p1"/>
+            <FechaAdopcion>2024-11-01</FechaAdopcion>
+        </Adopcion>
+    </Adopciones>
+</ProtectoraAdoptaDos>

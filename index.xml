@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="template_index.xsl"?>
+
+<PortalAdoptaDos>
+    
+    <PaginaPrincipal>
+        
+        <Hero>
+            <Titulo>¿Listos para dar un hogar juntos?</Titulo>
+            <Subtitulo>En AdoptaDos, la adopción es más responsable y feliz cuando se comparte. Regístrate, inicia sesión y adopta junto a otra persona registrada.</Subtitulo>
+            <BotonCrearCuenta>Crear cuenta</BotonCrearCuenta>
+            <BotonIniciarSesion>Iniciar sesión</BotonIniciarSesion>
+        </Hero>
+        
+        <AnimalesDestacados>
+            <Animal id="a_luna">
+                <Nombre>Luna</Nombre>
+                <Especie>Gato - 2 años</Especie>
+                <Descripcion>Tranquila y cariñosa. Ideal para pisos.</Descripcion>
+                <ImagenUrl>assets/luna.jpg</ImagenUrl> 
+            </Animal>
+            <Animal id="a_thumper">
+                <Nombre>Thumper</Nombre>
+                <Especie>Conejo - 1 año</Especie>
+                <Descripcion>Juguetón y sociable. Necesita espacio seguro.</Descripcion>
+                <ImagenUrl>assets/thumper.jpg</ImagenUrl> 
+            </Animal>
+            <Animal id="a_firulais">
+                <Nombre>Firulais</Nombre>
+                <Especie>Perro - 3 años</Especie>
+                <Descripcion>Energético pero obediente. Ideal para familias activas.</Descripcion>
+                <ImagenUrl>assets/firulais.jpg</ImagenUrl> 
+            </Animal>
+        </AnimalesDestacados>
+
+        <Caracteristicas>
+            <Feature>
+                <Titulo>Registro Individual</Titulo>
+                <Icono>user-plus</Icono>
+                <Texto>Cada persona crea su perfil único con email y contraseña.</Texto>
+            </Feature>
+            <Feature>
+                <Titulo>Adopción Conjunta</Titulo>
+                <Icono>heart</Icono>
+                <Texto>Al adoptar, se vinculan dos usuarios registrados a un animal.</Texto>
+            </Feature>
+        </Caracteristicas>
+
+    </PaginaPrincipal>
+
+</PortalAdoptaDos>
