@@ -1,179 +1,155 @@
 // logica_adopciones.js
 
-// --- CONSTANTES ---
-const XML_STORAGE_KEY = 'adopcionesXMLData';
-const XML_URL = 'adopciones.xml'; 
-const XSL_URL = 'template_adopciones.xsl';
-const CONTENEDOR_ID = 'listaAdopciones'; // El ID de la sección que contiene la tabla
+const XML_STORAGE_KEY = 'usuariosXMLData'; 
+const ADOPTIONS_STORAGE_KEY = 'adopcionesRegistro'; 
+const ANIMAL_STORAGE_KEY = 'animalesEnAdopcion'; 
+const REDIRECT_URL = 'perfil_personal.xml'; 
 
-// --- FUNCIÓN CENTRAL DE TRANSFORMACIÓN ---
-
-/**
- * Aplica la transformación XSLT al documento XML dado y actualiza el contenido de la tabla.
- * @param {Document} xmlDoc - El objeto Documento XML (con o sin las nuevas adopciones).
- * @param {string} xslUrl - URL del archivo XSLT.
- * @param {string} contenedorId - ID del elemento que contiene la tabla en el HTML generado.
- */
-function transformarYMostrar(xmlDoc, xslUrl, contenedorId) {
-    const contenedor = document.getElementById(contenedorId);
-    if (!contenedor) {
-        console.error(`Contenedor con ID '${contenedorId}' no encontrado.`);
-        return;
-    }
-
-    fetch(xslUrl)
-        .then(response => response.text())
-        .then(xslText => {
-            const parser = new DOMParser();
-            const xslDoc = parser.parseFromString(xslText, 'application/xml');
-            
-            if (typeof XSLTProcessor !== 'undefined') {
-                const xsltProcessor = new XSLTProcessor();
-                xsltProcessor.importStylesheet(xslDoc);
-                
-                // Transforma el documento XML completo en un nuevo documento HTML
-                const resultDoc = xsltProcessor.transformToDocument(xmlDoc);
-                
-                // Extrae SOLO el contenido de la sección que queremos actualizar
-                const updatedSection = resultDoc.getElementById(contenedorId);
-
-                if (updatedSection) {
-                    // Reemplaza el contenido de la sección de la tabla en el documento principal
-                    contenedor.innerHTML = updatedSection.innerHTML;
-                    contenedor.querySelector('h2').textContent = 'Adopciones Registradas (Datos Actualizados)';
-                } else {
-                    console.error("La sección de la tabla no se encontró en el documento transformado.");
-                }
-            } else {
-                contenedor.innerHTML = '<p>Tu navegador no soporta XSLTProcessor para actualizaciones dinámicas.</p>';
-            }
-        })
-        .catch(error => console.error('Error durante la transformación XSL:', error));
-}
-
-
-// --- LÓGICA DE CARGA INICIAL ---
+// --- LISTA DE ANIMALES PREDETERMINADOS (ESTÁTICOS) ---
+const PREDETERMINED_ANIMALS = [
+    { id: 'P001', nombre: 'Luna', especie: 'Perro', raza: 'Labrador', estado: 'Disponible' },
+    { id: 'P002', nombre: 'Milo', especie: 'Gato', raza: 'Siamés', estado: 'Disponible' },
+    { id: 'P003', nombre: 'Coco', especie: 'Perro', raza: 'Poodle', estado: 'Disponible' },
+    { id: 'P004', nombre: 'Bigotes', especie: 'Gato', raza: 'Común Europeo', estado: 'Disponible' },
+];
 
 /**
- * Carga el XML inicial (o desde localStorage) y prepara la aplicación.
+ * Busca un usuario en el XML de localStorage por email.
  */
-function cargarYPrepararApp() {
-    const xmlString = localStorage.getItem(XML_STORAGE_KEY);
+function findUserByEmail(email, xmlDoc) {
+    const xpath = `//usuario[email='${email}']`;
+    const userNode = xmlDoc.evaluate(xpath, xmlDoc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     
-    if (xmlString) {
-        // Cargar desde localStorage (Datos persistentes simulados)
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlString, 'application/xml');
-        console.log('XML cargado desde localStorage. Transformando...');
-        
-        // Llamar a la transformación para asegurar que la tabla actualizada se muestre
-        transformarYMostrar(xmlDoc, XSL_URL, CONTENEDOR_ID);
-        
-    } else {
-        // Cargar desde el archivo estático la primera vez
-        fetch(XML_URL)
-            .then(response => response.text())
-            .then(xmlText => {
-                localStorage.setItem(XML_STORAGE_KEY, xmlText); // Guardar el original
-                console.log('XML cargado desde archivo estático e inicializado en localStorage.');
-                // La transformación inicial la hace el navegador por el <?xml-stylesheet?>
-            })
-            .catch(error => {
-                console.error('Error cargando XML inicial:', error);
-                document.getElementById(CONTENEDOR_ID).innerHTML = '<p>Error al cargar el archivo XML estático.</p>';
-            });
+    if (!userNode) return null;
+    
+    const data = { id: userNode.getAttribute('id') };
+    const children = userNode.children;
+    for (let i = 0; i < children.length; i++) {
+        data[children[i].tagName] = children[i].textContent;
+    }
+    return data;
+}
+
+/**
+ * Rellena el desplegable de selección de animal combinando listas.
+ */
+function renderAnimalOptions() {
+    const selectElement = document.getElementById('animal-select');
+    if (!selectElement) return;
+
+    // 1. Obtener la lista dinámica de animales registrados por usuarios
+    const animalesJSON = localStorage.getItem(ANIMAL_STORAGE_KEY);
+    const animalesDinamicos = JSON.parse(animalesJSON || '[]');
+
+    // 2. COMBINAR: Unir la lista estática y la dinámica
+    const todosLosAnimales = [...PREDETERMINED_ANIMALS, ...animalesDinamicos];
+
+    // 3. Limpiar opciones existentes
+    selectElement.innerHTML = '<option value="">— Selecciona Animal a Adoptar —</option>';
+    
+    // 4. Generar nuevas opciones a partir de la lista combinada
+    let animalesDisponibles = 0;
+    
+    todosLosAnimales.forEach(animal => {
+        if (animal.estado === 'Disponible') {
+            const option = document.createElement('option');
+            option.value = animal.id; 
+            option.textContent = `${animal.nombre} (${animal.especie} / ${animal.raza || 'Sin raza'})`;
+            selectElement.appendChild(option);
+            animalesDisponibles++;
+        }
+    });
+
+    if (animalesDisponibles === 0) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'No hay animales disponibles para adopción.';
+        option.disabled = true;
+        selectElement.appendChild(option);
     }
 }
 
 
-// --- MANEJO DEL REGISTRO ---
-
 /**
- * Maneja el envío del formulario, valida, añade el nodo XML y actualiza la vista.
+ * Maneja el envío del formulario de adopción.
  */
-function manejarRegistro(event) {
+function handleAdoptionSubmit(event) {
     event.preventDefault(); 
 
-    const id_pareja = document.getElementById('id_pareja').value.trim();
-    const id_animal = document.getElementById('id_animal').value.trim();
-    const fecha = document.getElementById('fecha').value.trim();
-
-    if (!id_pareja || !id_animal || !fecha) {
-        alert("Por favor, completa todos los campos.");
+    // 1. Obtener valores
+    const animalSelect = document.getElementById('animal-select'); 
+    const animalId = animalSelect.value;
+    const animalName = animalSelect.options[animalSelect.selectedIndex].text; 
+    const email1 = document.getElementById('email1').value.trim();
+    const email2 = document.getElementById('email2').value.trim();
+    
+    if (animalId === "") {
+        alert("Por favor, selecciona un animal.");
+        return;
+    }
+    if (email1 === email2) {
+        alert("Los correos de los dos adoptantes deben ser diferentes.");
         return;
     }
 
+    // 2. Cargar XML de usuarios
     const xmlString = localStorage.getItem(XML_STORAGE_KEY);
+    if (!xmlString) {
+        alert("Error: No se encontró la base de datos de usuarios.");
+        return;
+    }
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlString, 'application/xml');
-    
-    // 1. Validación (Busca si los IDs existen en el XML)
-    // Nota: El uso de XPath es más avanzado y seguro para validación.
-    const parejaExiste = xmlDoc.evaluate(`//Pareja[@id='${id_pareja}']`, xmlDoc, null, XPathResult.BOOLEAN_TYPE, null).booleanValue;
-    const animalExiste = xmlDoc.evaluate(`//Animal[@id='${id_animal}']`, xmlDoc, null, XPathResult.BOOLEAN_TYPE, null).booleanValue;
 
-    if (!parejaExiste) {
-        alert(`Error: La Pareja con ID '${id_pareja}' no existe en el registro.`);
+    // 3. Validar ambos adoptantes
+    const adoptante1 = findUserByEmail(email1, xmlDoc);
+    const adoptante2 = findUserByEmail(email2, xmlDoc);
+
+    if (!adoptante1) {
+        alert(`Error: El email ${email1} (Primer Adoptante) no está registrado.`);
         return;
     }
-    if (!animalExiste) {
-        alert(`Error: El Animal con ID '${id_animal}' no existe en el registro.`);
-        return;
-    }
-    
-    // 2. Crear y añadir los nuevos nodos XML
-    const nuevaAdopcion = xmlDoc.createElement('Adopcion');
-
-    const animalRef = xmlDoc.createElement('AnimalRef');
-    animalRef.setAttribute('id_animal', id_animal);
-
-    const parejaRef = xmlDoc.createElement('ParejaRef');
-    parejaRef.setAttribute('id_pareja', id_pareja);
-
-    const fechaAdopcion = xmlDoc.createElement('FechaAdopcion');
-    fechaAdopcion.textContent = fecha;
-
-    nuevaAdopcion.appendChild(animalRef);
-    nuevaAdopcion.appendChild(parejaRef);
-    nuevaAdopcion.appendChild(fechaAdopcion);
-
-    const nodoAdopciones = xmlDoc.getElementsByTagName('Adopciones')[0];
-    if (nodoAdopciones) {
-        nodoAdopciones.appendChild(nuevaAdopcion);
-    } else {
-        alert("Error interno: No se encontró el nodo <Adopciones> para guardar el registro.");
+    if (!adoptante2) {
+        alert(`Error: El email ${email2} (Segundo Adoptante) no está registrado.`);
         return;
     }
 
-    // 3. Guardar el XML actualizado en localStorage
-    const serializer = new XMLSerializer();
-    const nuevoXmlString = serializer.serializeToString(xmlDoc);
-    localStorage.setItem(XML_STORAGE_KEY, nuevoXmlString);
+    // 4. Crear y registrar la nueva adopción
+    const nuevaAdopcion = {
+        adoptante1Id: adoptante1.id,
+        adoptante2Id: adoptante2.id,
+        id_pareja: `${adoptante1.id}-${adoptante2.id}`, 
+        
+        id_animal: animalId,
+        animal_name: animalName.split('(')[0].trim(), // Limpiar el nombre para la tarjeta
+        fecha: new Date().toLocaleDateString('es-ES'),
+        adoptante1: adoptante1.nombre,
+        adoptante2: adoptante2.nombre,
+    };
+
+    // Guardar en adopcionesRegistro
+    let registroAdopciones = JSON.parse(localStorage.getItem(ADOPTIONS_STORAGE_KEY) || '[]');
+    registroAdopciones.push(nuevaAdopcion);
+    localStorage.setItem(ADOPTIONS_STORAGE_KEY, JSON.stringify(registroAdopciones));
     
-    alert(`¡Adopción registrada con éxito! La lista se ha actualizado.`);
+    alert(`🎉 Solicitud de adopción conjunta para ${nuevaAdopcion.animal_name} registrada.`);
 
-    // 4. Recargar y mostrar la lista de adopciones actualizada
-    transformarYMostrar(xmlDoc, XSL_URL, CONTENEDOR_ID);
-
-    // 5. Limpiar el formulario
-    document.getElementById('formularioRegistro').reset();
+    // 5. Redirección
+    event.target.reset(); 
+    window.location.href = REDIRECT_URL; 
 }
 
 
 // --- INICIALIZACIÓN ---
-
 document.addEventListener('DOMContentLoaded', () => {
-    cargarYPrepararApp(); 
-
-    // Adjuntar el manejador de eventos al formulario después de que el XSLT lo haya creado.
-    // Usamos MutationObserver como respaldo, aunque 'defer' debería ser suficiente.
+    // Usamos MutationObserver para garantizar que el formulario exista antes de renderizar
     const observer = new MutationObserver((mutationsList, observer) => {
-        const form = document.getElementById('formularioRegistro');
+        const form = document.getElementById('adoptionForm');
         if (form) {
-            form.addEventListener('submit', manejarRegistro);
-            observer.disconnect(); // Detener el observador una vez encontrado
+            renderAnimalOptions(); 
+            form.addEventListener('submit', handleAdoptionSubmit);
+            observer.disconnect();
         }
     });
-    // Observar el cuerpo del documento en busca de cambios en sub-árboles (donde estará el formulario)
     observer.observe(document.body, { childList: true, subtree: true });
 });

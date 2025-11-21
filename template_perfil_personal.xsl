@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="html" indent="yes" encoding="UTF-8"/>
+<xsl:output method="html" doctype-system="about:legacy-compat" encoding="UTF-8" indent="yes" />
 
 <xsl:template match="/">
 <html>
@@ -47,6 +47,20 @@
 
         </main>
     </div>
+    
+    <div id="animal-details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">×</span>
+            <h2 id="modal-title">Detalles del Animal</h2>
+            <div id="modal-body-content">
+                <p>Cargando datos...</p> 
+            </div>
+            <div class="modal-footer">
+                <p>Información de registro del animal.</p>
+            </div>
+        </div>
+    </div>
+    
 </body>
 </html>
 </xsl:template>

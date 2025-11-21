@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="template_registrar_animal.xsl"?>
+
+<datos_formulario>
+    <titulo>Registro de Nuevo Animal</titulo>
+    <subtitulo>Completa los detalles para poner un animal en adopción.</subtitulo>
+    <clase_contenedor>form-container</clase_contenedor>
+    <clase_cuerpo>form-body</clase_cuerpo>
+    
+    <animal>
+        <id_animal></id_animal>
+        <nombre_animal></nombre_animal>
+        <especie_animal></especie_animal>
+        <raza_animal></raza_animal>
+        <edad_animal></edad_animal>
+        <descripcion_animal></descripcion_animal>
+    </animal>
+    
+    <clases_css>
+        <archivo>css/crear_cuenta.css</archivo>
+    </clases_css>
+    <scripts_js>
+        <archivo>js/logica_registro_animal.js</archivo>
+    </scripts_js>
+</datos_formulario>

@@ -1,21 +1,17 @@
 // logica_iniciar_sesion.js
 
 const XML_STORAGE_KEY = 'usuariosXMLData'; 
-const REDIRECT_URL = 'perfil_personal.xml'; // URL a la que se redirige tras login exitoso
+const LOGGED_IN_USER_KEY = 'loggedInUser'; 
+const REDIRECT_URL = 'perfil_personal.xml'; 
 
 /**
  * Función que maneja el envío del formulario y valida las credenciales.
  */
 function manejarLogin(event) {
-    event.preventDefault();
+    event.preventDefault(); 
 
     const emailInput = document.getElementById('email').value.trim();
     const contrasenaInput = document.getElementById('contrasena').value.trim();
-
-    if (!emailInput || !contrasenaInput) {
-        alert("Por favor, introduce tu email y contraseña.");
-        return;
-    }
 
     const xmlString = localStorage.getItem(XML_STORAGE_KEY);
 
@@ -27,32 +23,34 @@ function manejarLogin(event) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlString, 'application/xml');
 
-    // Usar XPath para encontrar al usuario por email y contraseña
-    // ADVERTENCIA: Esta es una búsqueda en texto plano, solo adecuada para ejercicios locales.
-    const xpath = `/registro_usuario/usuarios/usuario[email='${emailInput}' and contrasena='${contrasenaInput}']`;
+    // Búsqueda robusta por credenciales (//usuario)
+    const xpath = `//usuario[email='${emailInput}' and contrasena='${contrasenaInput}']`;
     
-    // Evaluar XPath
     const userNode = xmlDoc.evaluate(xpath, xmlDoc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 
     if (userNode) {
-        // Login exitoso
-        alert(`¡Bienvenido de nuevo! Iniciaste sesión como ${emailInput}.`);
-        
-        // Simulación de sesión: guardamos el ID del usuario en sessionStorage
+        // LOGIN EXITOSO
         const userId = userNode.getAttribute('id');
-        sessionStorage.setItem('loggedInUser', userId);
+
+        if (!userId) {
+            alert("Error interno: Usuario encontrado pero no tiene un ID asignado.");
+            return;
+        }
         
-        // Redirigir al panel de adopciones
+        sessionStorage.removeItem(LOGGED_IN_USER_KEY);
+        sessionStorage.setItem(LOGGED_IN_USER_KEY, userId); // Guarda el ID CORRECTO
+        
+        console.log(`[LOGIN OK] Sesión iniciada para ID: ${userId}`);
+        alert(`¡Sesión iniciada! Redirigiendo a tu perfil. ID: ${userId}`);
+        
         window.location.href = REDIRECT_URL;
     } else {
-        // Login fallido
         alert("Error: Credenciales incorrectas. Verifica tu email y contraseña.");
     }
 }
 
 // --- INICIALIZACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Adjuntar el manejador de eventos al formulario
     const observer = new MutationObserver((mutationsList, observer) => {
         const form = document.getElementById('loginForm');
         if (form) {
@@ -60,6 +58,5 @@ document.addEventListener('DOMContentLoaded', () => {
             observer.disconnect();
         }
     });
-    // Observar el cuerpo del documento hasta que el XSLT renderice el formulario
     observer.observe(document.body, { childList: true, subtree: true });
 });

@@ -36,12 +36,11 @@ body {
 }
 
 /* ==================================== */
-/* 2. HEADER Y AVATAR (POSICIONAMIENTO CLAVE) */
+/* 2. HEADER Y AVATAR */
 /* ==================================== */
 .profile-header {
     background-color: var(--primary-green);
     color: white;
-    /* Padding inferior reducido para que el avatar suba */
     padding: 20px 20px 25px 20px; 
     text-align: center;
     position: relative;
@@ -66,8 +65,6 @@ body {
     object-fit: cover;
     border: 4px solid var(--box-bg); 
     box-shadow: 0 2px 8px var(--shadow-color);
-    
-    /* Posición ajustada: 70px desde arriba y 40px desde la derecha */
     position: absolute;
     top: 70px; 
     right: 40px; 
@@ -83,16 +80,6 @@ body {
     position: relative;
 }
 
-/* El primer section-card (Datos Personales) debe compensar el avatar */
-.profile-body > .section-card:first-child {
-    margin-top: 0; 
-}
-
-.section-card {
-    padding: 15px 0;
-    margin-top: 10px;
-}
-
 .section-card h2 {
     color: var(--primary-green);
     font-size: 1.2em;
@@ -103,9 +90,8 @@ body {
     margin-bottom: 15px;
 }
 
-/* NUEVA REGLA: Contenedor de datos personales para dejar espacio al avatar */
+/* Contenedor de datos personales para dejar espacio al avatar */
 .datos-personales .data-group {
-    /* Calculamos el ancho restante para que el texto no se superponga al avatar (80px + padding) */
     width: calc(100% - 110px); 
 }
 
@@ -124,35 +110,48 @@ body {
 }
 
 /* ==================================== */
-/* 4. TARJETA DE ADOPCIÓN */
+/* 4. TARJETAS DE ADOPCIÓN (LISTADO) */
 /* ==================================== */
-.adoption-card {
-    border-radius: 6px;
-    margin-bottom: 20px;
-    background-color: var(--light-gray);
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+/* Contenedor de cada adopción */
+.adoption-card-simple {
+    display: flex;
+    align-items: flex-start;
+    padding: 15px 0;
 }
 
-.adoption-card img {
+/* Contenedor de la imagen: TAMAÑO FIJO */
+.adoption-image-wrapper {
+    flex-shrink: 0; 
+    margin-right: 15px;
+    width: 100px; 
+    height: 100px; 
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px var(--shadow-color);
+}
+
+.adoption-image-wrapper img {
     width: 100%;
-    height: 120px; 
-    object-fit: cover;
-    margin-bottom: 10px;
+    height: 100%;
+    object-fit: cover; 
+    display: block; 
 }
 
 .adoption-card-content {
-    padding: 15px;
+    flex-grow: 1;
+    padding: 0; 
 }
 
-.adoption-card h3 {
+.adoption-card-content h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
     color: var(--primary-green);
-    margin: 0 0 5px 0;
     font-size: 1.1em;
 }
 
-.adoption-card p {
-    margin: 4px 0;
+.adoption-card-content p {
+    margin: 3px 0;
     font-size: 0.9em;
 }
 
@@ -164,6 +163,24 @@ body {
     padding-top: 10px;
 }
 
+/* Estilo para el botón "Ver Detalles" (Inyectado por JS) */
+.adoption-card-content .details-button {
+    margin-top: 8px !important; 
+    padding: 6px 10px !important;
+    background-color: var(--secondary-green) !important; 
+    color: white !important;
+    border: none !important;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.2s;
+}
+
+.adoption-card-content .details-button:hover {
+    background-color: #55913e !important;
+}
+
+
 /* ==================================== */
 /* 5. BOTONES DE ACCIÓN */
 /* ==================================== */
@@ -174,14 +191,8 @@ body {
     gap: 10px;
 }
 
-.top-actions {
-    margin-bottom: 15px;
-}
-
-.bottom-actions {
-    border-top: 1px solid var(--border-color);
-    padding-top: 15px;
-}
+.top-actions { margin-bottom: 15px; }
+.bottom-actions { border-top: 1px solid var(--border-color); padding-top: 15px; }
 
 .btn {
     padding: 8px 10px;
@@ -193,14 +204,8 @@ body {
     transition: background-color 0.2s;
 }
 
-/* Distribución de botones */
-.top-actions .btn {
-    flex: 1 1 20%; 
-    min-width: 110px;
-}
-.bottom-actions .btn {
-    flex: 1 1 45%; 
-}
+.top-actions .btn { flex: 1 1 20%; min-width: 110px; }
+.bottom-actions .btn { flex: 1 1 45%; }
 
 /* Colores y Hover */
 .btn-green { background-color: var(--primary-green); color: white; }
@@ -216,3 +221,103 @@ body {
 .btn-red:hover { background-color: #a00000; }
 
 .icon { margin-right: 3px; }
+
+/* ==================================== */
+/* 6. ESTILOS DEL MODAL (TARJETA DE DETALLES) */
+/* ==================================== */
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6); 
+}
+
+.modal-content {
+    background-color: var(--box-bg);
+    margin: 10% auto; 
+    padding: 25px;
+    border: 1px solid #888;
+    width: 90%; 
+    max-width: 500px; 
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    position: relative;
+    animation: fadeIn 0.3s; 
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--red-action); 
+    text-decoration: none;
+}
+
+#modal-title {
+    color: var(--primary-green); 
+    border-bottom: 2px solid var(--secondary-green);
+    padding-bottom: 10px;
+    margin-top: 0;
+    font-size: 1.4em;
+}
+
+#modal-body-content p {
+    line-height: 1.6;
+    margin: 8px 0;
+    font-size: 1em;
+    color: var(--text-color);
+}
+
+#modal-body-content strong {
+    display: inline-block;
+    min-width: 120px; 
+    color: var(--primary-green);
+    font-weight: bold;
+}
+
+.modal-footer {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.8em;
+    color: var(--subtle-text);
+    text-align: center;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-20px);} 
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* Ajuste Responsivo Básico */
+@media (max-width: 480px) {
+    .main-container {
+        padding: 0;
+    }
+    .profile-body {
+        padding: 20px;
+    }
+    .top-actions .btn,
+    .bottom-actions .btn {
+        flex: 1 1 100%;
+    }
+    .modal-content {
+        margin: 5% auto;
+    }
+    #user-avatar {
+        right: 50%;
+        transform: translateX(50%);
+    }
+}

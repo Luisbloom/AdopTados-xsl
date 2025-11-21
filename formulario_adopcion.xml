@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="template_formulario_adopcion.xsl"?>
+
+<formulario_adopcion>
+    <titulo>Formulario de Adopción Conjunta</titulo>
+    <subtitulo>Dos usuarios registrados + un animal = un nuevo hogar</subtitulo>
+
+    <secciones>
+        <seccion_animal>Animal a Adoptar</seccion_animal>
+        <seccion_adoptante1>Primer Adoptante</seccion_adoptante1>
+        <seccion_adoptante2>Segundo Adoptante</seccion_adoptante2>
+        <seccion_compromisos>Compromisos</seccion_compromisos>
+    </secciones>
+    
+    <animales_disponibles>
+        <animal id="a1">
+            <nombre>Luna</nombre>
+            <especie>Perro</especie>
+            <raza>Labrador</raza>
+        </animal>
+        <animal id="a2">
+            <nombre>Gino</nombre>
+            <especie>Gato</especie>
+            <raza>Europeo Común</raza>
+        </animal>
+        <animal id="a3">
+            <nombre>Tambor</nombre>
+            <especie>Conejo</especie>
+            <raza>Belier</raza>
+        </animal>
+    </animales_disponibles>
+
+    <enlaces>
+        <volver_inicio url="index.xml">Volver al inicio</volver_inicio>
+        <crear_perfil url="crear_cuenta.xml">Crea tu perfil primero</crear_perfil>
+    </enlaces>
+</formulario_adopcion>

@@ -19,7 +19,7 @@
             <nav class="site-nav">
                 <a href="index.xml">Inicio</a> 
                 <a href="iniciar_sesion.xml">Iniciar Sesión</a>
-                <a href="#">Animales en Adopción</a>
+                <a href="perfil_personal.xml">Mi Perfil</a> <a href="#">Animales en Adopción</a>
                 <a href="#">Contacto</a>
                 <a href="crear_cuenta.xml" class="btn-register">Regístrate</a>
             </nav>
@@ -51,13 +51,9 @@
                             
                             <tr>
                                 <td><xsl:value-of select="@id"/></td> 
-                                
                                 <td><xsl:value-of select="FechaAdopcion"/></td>
-                                
                                 <td><xsl:value-of select="$animal/Nombre"/></td>
-                                
                                 <td><xsl:value-of select="$animal/Especie"/> / <xsl:value-of select="$animal/Raza"/></td>
-                                
                                 <td>
                                     <xsl:value-of select="$pareja/Persona1/Nombre"/> y <xsl:value-of select="$pareja/Persona2/Nombre"/>
                                 </td>
@@ -69,7 +65,6 @@
 
             <div class="actions">
                 <a href="index.xml" class="btn btn-primary">Volver a Inicio</a>
-                <a href="#" class="btn btn-secondary">Añadir Nueva Adopción</a>
             </div>
             
         </main>
