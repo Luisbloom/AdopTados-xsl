@@ -1,0 +1,218 @@
+/* perfil_personal.css - Estilos completos y mejorados */
+
+/* ==================================== */
+/* 1. BASE Y CONTENEDOR */
+/* ==================================== */
+:root {
+    --primary-green: #38761d;
+    --secondary-green: #6aa84f;
+    --red-action: #cc0000;
+    --light-gray: #f5f5f5;
+    --text-color: #333;
+    --subtle-text: #666;
+    --box-bg: #ffffff;
+    --border-color: #ddd;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7fff7;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.main-container {
+    background: var(--box-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    width: 100%;
+    max-width: 600px; 
+    overflow: hidden;
+    position: relative; 
+}
+
+/* ==================================== */
+/* 2. HEADER Y AVATAR (POSICIONAMIENTO CLAVE) */
+/* ==================================== */
+.profile-header {
+    background-color: var(--primary-green);
+    color: white;
+    /* Padding inferior reducido para que el avatar suba */
+    padding: 20px 20px 25px 20px; 
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.header-title {
+    font-size: 1.6em;
+    margin: 0 0 5px 0;
+}
+
+.header-info {
+    font-size: 0.9em;
+    color: #c8e4c8;
+    margin: 0;
+}
+
+#user-avatar {
+    width: 80px; 
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--box-bg); 
+    box-shadow: 0 2px 8px var(--shadow-color);
+    
+    /* Posición ajustada: 70px desde arriba y 40px desde la derecha */
+    position: absolute;
+    top: 70px; 
+    right: 40px; 
+    z-index: 20;
+    display: block; 
+}
+
+/* ==================================== */
+/* 3. CUERPO DEL PERFIL Y SECCIONES */
+/* ==================================== */
+.profile-body {
+    padding: 30px 30px 30px 30px; 
+    position: relative;
+}
+
+/* El primer section-card (Datos Personales) debe compensar el avatar */
+.profile-body > .section-card:first-child {
+    margin-top: 0; 
+}
+
+.section-card {
+    padding: 15px 0;
+    margin-top: 10px;
+}
+
+.section-card h2 {
+    color: var(--primary-green);
+    font-size: 1.2em;
+    font-weight: bold;
+    border-bottom: 2px solid var(--secondary-green);
+    padding-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* NUEVA REGLA: Contenedor de datos personales para dejar espacio al avatar */
+.datos-personales .data-group {
+    /* Calculamos el ancho restante para que el texto no se superponga al avatar (80px + padding) */
+    width: calc(100% - 110px); 
+}
+
+.data-group p {
+    margin: 5px 0;
+    line-height: 1.4;
+    color: var(--text-color);
+    font-size: 0.95em;
+}
+
+.data-group strong {
+    font-weight: normal;
+    color: var(--secondary-green);
+    display: inline-block;
+    min-width: 100px; 
+}
+
+/* ==================================== */
+/* 4. TARJETA DE ADOPCIÓN */
+/* ==================================== */
+.adoption-card {
+    border-radius: 6px;
+    margin-bottom: 20px;
+    background-color: var(--light-gray);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.adoption-card img {
+    width: 100%;
+    height: 120px; 
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.adoption-card-content {
+    padding: 15px;
+}
+
+.adoption-card h3 {
+    color: var(--primary-green);
+    margin: 0 0 5px 0;
+    font-size: 1.1em;
+}
+
+.adoption-card p {
+    margin: 4px 0;
+    font-size: 0.9em;
+}
+
+.no-adoptions {
+    text-align: center;
+    color: var(--subtle-text);
+    margin: 20px 0;
+    font-style: italic;
+    padding-top: 10px;
+}
+
+/* ==================================== */
+/* 5. BOTONES DE ACCIÓN */
+/* ==================================== */
+.action-buttons-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.top-actions {
+    margin-bottom: 15px;
+}
+
+.bottom-actions {
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+.btn {
+    padding: 8px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.85em;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+/* Distribución de botones */
+.top-actions .btn {
+    flex: 1 1 20%; 
+    min-width: 110px;
+}
+.bottom-actions .btn {
+    flex: 1 1 45%; 
+}
+
+/* Colores y Hover */
+.btn-green { background-color: var(--primary-green); color: white; }
+.btn-blue { background-color: #4a90e2; color: white; }
+.btn-light-green { background-color: var(--secondary-green); color: white; }
+.btn-light-gray { background-color: var(--light-gray); color: var(--text-color); border: 1px solid #ccc; }
+.btn-red { background-color: var(--red-action); color: white; }
+
+.btn-green:hover { background-color: #2e6217; }
+.btn-blue:hover { background-color: #3b73b8; }
+.btn-light-green:hover { background-color: #55913e; }
+.btn-light-gray:hover { background-color: #e0e0e0; }
+.btn-red:hover { background-color: #a00000; }
+
+.icon { margin-right: 3px; }

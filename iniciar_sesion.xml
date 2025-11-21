@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="template_iniciar_sesion.xsl"?>
+
+<inicio_sesion>
+    <titulo>Iniciar Sesión</titulo>
+    <subtitulo>Accede a tu perfil y gestiona tus adopciones</subtitulo>
+    <placeholders>
+        <email>tu@email.com</email>
+        </placeholders>
+    <enlaces>
+        <volver>index.xml</volver>
+        <olvidaste>#</olvidaste> <registro>crear_cuenta.xml</registro> </enlaces>
+    <mensaje_proteccion>Tu información está protegida.</mensaje_proteccion>
+</inicio_sesion>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="template_perfil_personal.xsl"?>
+
+<perfil_usuario>
+    <titulo>Mi Perfil</titulo>
+    <secciones>
+        <datos_personales>Datos Personales</datos_personales>
+        <mis_adopciones>Mis Adopciones</mis_adopciones>
+    </secciones>
+    <acciones>
+        <enlace_inicio url="index.xml">Inicio</enlace_inicio>
+        <enlace_nueva_adopcion url="adopciones.xml">Nueva Adopción</enlace_nueva_adopcion>
+        <enlace_registrar_animal url="#">Registrar Animal</enlace_registrar_animal>
+        <enlace_editar_perfil url="#">Editar Perfil</enlace_editar_perfil>
+        <enlace_borrar_cuenta url="#">Borrar Cuenta</enlace_borrar_cuenta>
+        <enlace_cerrar_sesion url="iniciar_sesion.xml">Cerrar Sesión</enlace_cerrar_sesion>
+    </acciones>
+    <datos_dinamicos/> 
+</perfil_usuario>

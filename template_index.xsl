@@ -6,7 +6,7 @@
 <html>
     <head>
         <title>AdoptaDos - Inicio</title>
-        <link rel="stylesheet" type="text/css" href="index.css" /> 
+        <link rel="stylesheet" type="text/css" href="css/index.css" /> 
     </head>
     
     <body>
@@ -16,10 +16,11 @@
                 🐾 Portal AdoptaDos <span>Adopta un animal... ¡en pareja!</span>
             </div>
             <nav class="site-nav">
-                <a href="adopciones.xml">Registro</a> 
+                <a href="adopciones.xml">Registro de adopciones</a> 
                 <a href="#">Iniciar Sesión</a>
                 <a href="#">Animales</a>
                 <a href="#">Contacto</a>
+                <a href="perfil_personal.xml">Perfil</a>
             </nav>
         </header>
         
@@ -53,10 +54,16 @@
     <div class="hero-box">
         <h2><xsl:value-of select="Titulo"/></h2>
         <p><xsl:value-of select="Subtitulo"/></p>
-        <div>
-            <a href="#" class="btn btn-primary"><xsl:value-of select="BotonCrearCuenta"/></a>
-            <a href="#" class="btn btn-secondary"><xsl:value-of select="BotonIniciarSesion"/></a>
-        </div>
+<div>
+    <a href="crear_cuenta.xml" class="btn btn-primary">
+        <xsl:value-of select="BotonCrearCuenta"/>
+    </a>
+
+    <a href="iniciar_sesion.xml" class="btn btn-secondary">
+        <xsl:value-of select="BotonIniciarSesion"/>
+    </a>
+</div>
+
     </div>
 </xsl:template>
 
