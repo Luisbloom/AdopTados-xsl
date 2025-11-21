@@ -12,7 +12,7 @@
             <link rel="stylesheet" type="text/css" href="css/registro_animal.css"/> 
         </xsl:for-each>
     </head>
-    <body>
+<body>
         <div class="header">
             <h1><xsl:value-of select="datos_formulario/titulo"/></h1>
         </div>
@@ -47,6 +47,12 @@
 
                     <label for="edad_animal">Edad (Años):</label>
                     <input type="number" id="edad_animal" min="0" required="true"/>
+                    
+                    <label for="peso_animal">Peso (kg):</label>
+                    <input type="number" id="peso_animal" min="0" step="0.1"/>
+
+                    <label for="altura_animal">Altura (cm):</label>
+                    <input type="number" id="altura_animal" min="0"/>
 
                     <label for="descripcion_animal">Descripción y Cuidados:</label>
                     <textarea id="descripcion_animal" rows="4" required="true"></textarea>

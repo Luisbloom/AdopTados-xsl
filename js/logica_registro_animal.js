@@ -1,19 +1,48 @@
-// js/logica_registro_animal.js
+// logica_registro_animal.js
 
 const ANIMAL_STORAGE_KEY = 'animalesEnAdopcion'; 
 const REDIRECT_URL = 'perfil_personal.xml';
 
+// --- LISTA DE ANIMALES PREDETERMINADOS (Fuente de datos inicial) ---
+const PREDETERMINED_ANIMALS = [
+    { id: 'P001', nombre: 'Luna', especie: 'Perro', raza: 'Labrador', estado: 'Disponible' },
+    { id: 'P002', nombre: 'Milo', especie: 'Gato', raza: 'Siamés', estado: 'Disponible' },
+    { id: 'P003', nombre: 'Coco', especie: 'Perro', raza: 'Poodle', estado: 'Disponible' },
+    { id: 'P004', nombre: 'Bigotes', especie: 'Gato', raza: 'Común Europeo', estado: 'Disponible' },
+];
+
 /**
- * Genera un ID simple para el animal (ej: A1, A2, etc.)
+ * Carga los animales predefinidos en localStorage si es la primera vez.
+ */
+function initializeAnimalData() {
+    let animalesDinamicos = JSON.parse(localStorage.getItem(ANIMAL_STORAGE_KEY) || '[]');
+    
+    // Solo inicializamos si la lista está vacía
+    if (animalesDinamicos.length === 0) {
+        const initializedAnimals = PREDETERMINED_ANIMALS.map(animal => ({
+            ...animal,
+            fechaRegistro: new Date().toLocaleDateString('es-ES') 
+        }));
+        
+        localStorage.setItem(ANIMAL_STORAGE_KEY, JSON.stringify(initializedAnimals));
+        console.log("DEBUG: Animales predefinidos cargados en localStorage.");
+    }
+}
+
+/**
+ * Genera un ID secuencial para animales registrados por usuarios (A1, A2, etc.)
  */
 function generateAnimalId(currentRecords) {
-    const lastId = currentRecords.length > 0 ? parseInt(currentRecords[currentRecords.length - 1].id.replace('A', '')) : 0;
-    return 'A' + (lastId + 1);
+    const userRegisteredAnimals = currentRecords.filter(a => a.id.startsWith('A'));
+    const lastIdNumber = userRegisteredAnimals.length > 0 
+        ? Math.max(...userRegisteredAnimals.map(a => parseInt(a.id.replace('A', '') || 0)))
+        : 0;
+        
+    return 'A' + (lastIdNumber + 1);
 }
 
 /**
  * Muestra u oculta el campo de texto "Especificar Otro"
- * basado en la selección del desplegable de especie.
  */
 function mostrarCampoOtro() {
     const especieSelect = document.getElementById('especie_animal');
@@ -37,29 +66,49 @@ function mostrarCampoOtro() {
  */
 function handleAnimalRegistration(event) {
     event.preventDefault(); 
+    console.log("DEBUG: Formulario de registro de animal enviado.");
 
-    // 1. Obtener valores del formulario
-    const nombre = document.getElementById('nombre_animal').value.trim();
-    const especieSelect = document.getElementById('especie_animal');
-    const otraEspecieInput = document.getElementById('otra_especie_input').value.trim();
+    // ===============================================
+    // 🌟 ZONA CRÍTICA CORREGIDA: Obtención de Valores Defensiva 🌟
+    // ===============================================
     
-    const raza = document.getElementById('raza_animal').value.trim();
-    const edad = document.getElementById('edad_animal').value;
+    // Función auxiliar para obtener el valor de forma segura
+    const getValue = (id, trim = true) => {
+        const element = document.getElementById(id);
+        if (!element) {
+             console.warn(`WARN: Elemento con ID '${id}' no encontrado en el DOM.`);
+             return ''; // Devuelve cadena vacía si el elemento falta
+        }
+        const value = element.value || '';
+        return trim ? value.trim() : value;
+    };
+
+    const nombre = getValue('nombre_animal');
+    const especieSelect = document.getElementById('especie_animal'); // Este debe ser el elemento completo
+    const otraEspecieInput = getValue('otra_especie_input');
     
-    const peso = document.getElementById('peso_animal').value;
-    const altura = document.getElementById('altura_animal').value;
+    const raza = getValue('raza_animal');
+    const edad = getValue('edad_animal', false); // No aplicar trim a números
+    
+    const peso = getValue('peso_animal', false);
+    const altura = getValue('altura_animal', false);
 
-    const descripcion = document.getElementById('descripcion_animal').value.trim();
-
-    // Determinar el valor final de la especie
+    const descripcion = getValue('descripcion_animal');
+    
+    // ===============================================
+    
+    // 1. Determinar el valor final de la especie
     let especie;
-    if (especieSelect.value === 'otro') {
+    if (especieSelect && especieSelect.value === 'otro') {
         especie = otraEspecieInput;
-    } else {
+    } else if (especieSelect) {
         especie = especieSelect.value;
+    } else {
+        especie = ''; // Falla si el select no existe
     }
 
-    // 2. Validaciones simples
+
+    // 2. Validaciones
     if (!nombre || !especie || !edad || !descripcion) {
         alert("Por favor, completa todos los campos obligatorios.");
         return;
@@ -99,19 +148,29 @@ function handleAnimalRegistration(event) {
 document.addEventListener('DOMContentLoaded', () => {
     window.mostrarCampoOtro = mostrarCampoOtro; 
     
-    const observer = new MutationObserver((mutationsList, observer) => {
+    // Usamos un pequeño retraso para asegurar que la transformación XSLT haya terminado
+    setTimeout(() => {
         const form = document.getElementById('registroAnimalForm');
+        const especieSelect = document.getElementById('especie_animal');
+
         if (form) {
+            console.log("DEBUG: Formulario 'registroAnimalForm' encontrado. Adjuntando listener.");
+            
+            initializeAnimalData(); 
+            
+            // ADJUNTAR EL MANEJADOR DE ENVÍO
             form.addEventListener('submit', handleAnimalRegistration);
+            
+            // Inicializar el estado del campo 'otro'
             mostrarCampoOtro(); 
-            observer.disconnect();
+        } else {
+            console.error("ERROR: Formulario 'registroAnimalForm' no encontrado. Asegúrese que el XSLT tiene el ID correcto.");
         }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-    
-    // Asignar el listener al select de especie si ya está presente
-    const especieSelect = document.getElementById('especie_animal');
-    if(especieSelect) {
-        especieSelect.addEventListener('change', mostrarCampoOtro);
-    }
+
+        if (especieSelect) {
+            // ADJUNTAR LISTENER AL SELECT DE ESPECIE
+            especieSelect.addEventListener('change', mostrarCampoOtro);
+        }
+        
+    }, 50); 
 });
