@@ -6,21 +6,27 @@
 <html>
     <head>
         <title>AdoptaDos - Inicio</title>
-        <link rel="stylesheet" type="text/css" href="css/index.css" /> 
+        <link rel="stylesheet" type="text/css" href="css/index.css"/>
+
     </head>
     
     <body>
         
         <header class="site-header">
             <div class="site-logo">
-                🐾 Portal AdoptaDos <span>Adopta un animal... ¡en pareja!</span>
+                🐾 AdoptaDos
             </div>
             <nav class="site-nav">
-                <a href="adopciones.xml">Registro de adopciones</a> 
-                <a href="#">Iniciar Sesión</a>
-                <a href="#">Animales</a>
-                <a href="#">Contacto</a>
+                <a href="index.xml">Inicio</a>
+                <a href="iniciar_sesion.xml">Iniciar Sesión</a>
+                <a href="crear_cuenta.xml">Crear Cuenta</a>
+                <a href="contacto.xml">Contacto</a>
+                <a href="animales_disponibles.xml">Animales Disponibles</a>
                 <a href="perfil_personal.xml">Perfil</a>
+
+                <!-- Separado con clase admin-link -->
+                <a href="adopciones.xml" class="admin-link">Registro de adopciones</a>
+                <a href="panel_admin.xml" class="admin-link">Panel de Administración</a>
             </nav>
         </header>
         
@@ -54,22 +60,34 @@
     <div class="hero-box">
         <h2><xsl:value-of select="Titulo"/></h2>
         <p><xsl:value-of select="Subtitulo"/></p>
-<div>
-    <a href="crear_cuenta.xml" class="btn btn-primary">
-        <xsl:value-of select="BotonCrearCuenta"/>
-    </a>
+        <div>
+            <a href="crear_cuenta.xml" class="btn btn-primary">
+                <xsl:value-of select="BotonCrearCuenta"/>
+            </a>
 
-    <a href="iniciar_sesion.xml" class="btn btn-secondary">
-        <xsl:value-of select="BotonIniciarSesion"/>
-    </a>
-</div>
-
+            <a href="iniciar_sesion.xml" class="btn btn-secondary">
+                <xsl:value-of select="BotonIniciarSesion"/>
+            </a>
+        </div>
     </div>
 </xsl:template>
 
 <xsl:template match="Animal">
     <div class="animal-card">
-        <img src="{ImagenUrl}" alt="Imagen de {Nombre}"/>
+
+        <!-- Imagen fija según el orden de aparición -->
+        <xsl:choose>
+            <xsl:when test="position() = 1">
+                <img src="img/gato1.jpg" alt="Imagen de {Nombre}"/>
+            </xsl:when>
+            <xsl:when test="position() = 2">
+                <img src="img/conejo1.jpg" alt="Imagen de {Nombre}"/>
+            </xsl:when>
+            <xsl:when test="position() = 3">
+                <img src="img/perro1.webp" alt="Imagen de {Nombre}"/>
+            </xsl:when>
+        </xsl:choose>
+
         <div class="card-body">
             <h3><xsl:value-of select="Nombre"/></h3>
             <p><xsl:value-of select="Especie"/></p>
@@ -84,4 +102,5 @@
         <p><xsl:value-of select="Texto"/></p>
     </div>
 </xsl:template>
+
 </xsl:stylesheet>

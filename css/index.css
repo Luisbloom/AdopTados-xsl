@@ -2,14 +2,14 @@
 /* 1. VARIABLES Y BASE */
 /* ==================================== */
 :root {
-    --primary-color: #3a5a40; 
-    --secondary-color: #588157; 
+    --primary-color: #38761d; 
+    --secondary-color: #6aa84f; 
     --box-bg: #ffffff;
-    --border-color: #ddd;
+    --border-color: #dce8d9;
 }
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #fffaf7;
+    background-color: #f7fff7;
     line-height: 1.3;
 }
 main {
@@ -18,7 +18,7 @@ main {
     margin: auto;
 }
 a {
-    color: #ff3c3c;
+    color: #2a7fff;
     text-decoration: none;
     outline: 0;
 }
@@ -32,7 +32,7 @@ hr {
     margin: 2rem auto;
 }
 footer {
-    color: #888;
+    color: #6d6d6d;
     margin-top: 2rem;
     text-align: center;
 }
@@ -151,7 +151,7 @@ footer {
     flex: 1 1 40%;
     max-width: 45%;
     padding: 15px;
-    background-color: #e6f7e6;
+    background-color: #e8f5e8;
     border: 1px solid var(--secondary-color);
     border-radius: 5px;
     text-align: center;
@@ -161,4 +161,23 @@ footer {
     color: var(--primary-color);
     display: block;
     margin-bottom: 5px;
+}
+/* ==================================== */
+/* Enlace especial de administración  */
+/* ==================================== */
+.admin-link {
+    margin: 0 15px;
+    padding: 5px 15px;
+    
+    /* Separador vertical claro y moderno */
+    border-left: 3px solid rgba(255, 255, 255, 0.5);
+    
+    font-weight: bold;
+    opacity: 0.95;
+    transition: 0.25s ease;
+}
+
+.admin-link:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+    opacity: 1;
 }

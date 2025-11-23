@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="template_panel_admin.xsl"?>
+
+<ProtectoraAdoptaDos>
+    <!-- Usuarios estáticos -->
+    <Usuarios>
+        <Usuario id="u1">
+            <Nombre>Ana</Nombre>
+            <Apellidos>García</Apellidos>
+            <Email>ana@example.com</Email>
+            <Telefono>600111222</Telefono>
+            <Direccion>Calle Falsa 123</Direccion>
+        </Usuario>
+        <Usuario id="u2">
+            <Nombre>Luis</Nombre>
+            <Apellidos>Martínez</Apellidos>
+            <Email>luis@example.com</Email>
+            <Telefono>600333444</Telefono>
+            <Direccion>Avenida Siempre Viva 456</Direccion>
+        </Usuario>
+    </Usuarios>
+
+    <!-- Animales estáticos -->
+    <Animales>
+        <Animal id="P001"><Nombre>Luna</Nombre><Especie>Perro</Especie><Raza>Labrador</Raza><Estado>Disponible</Estado></Animal>
+        <Animal id="P002"><Nombre>Milo</Nombre><Especie>Gato</Especie><Raza>Siamés</Raza><Estado>Disponible</Estado></Animal>
+        <Animal id="A001"><Nombre>Coco</Nombre><Especie>Perro</Especie><Raza>Poodle</Raza><Estado>Adoptado</Estado></Animal>
+    </Animales>
+
+    <!-- Adopciones estáticas -->
+    <Adopciones>
+        <Adopcion>
+            <AnimalRef id_animal="A001"/>
+            <ParejaRef id_pareja="u1-u2"/>
+            <FechaAdopcion>2025-01-10</FechaAdopcion>
+        </Adopcion>
+    </Adopciones>
+
+    <!-- Mensajes estáticos -->
+    <Mensajes>
+        <Mensaje id="m1">
+            <Nombre>Pedro</Nombre>
+            <Email>pedro@example.com</Email>
+            <Contenido>Hola, quiero información sobre adopción.</Contenido>
+            <Fecha>2025-11-01</Fecha>
+        </Mensaje>
+        <Mensaje id="m2">
+            <Nombre>Lucía</Nombre>
+            <Email>lucia@example.com</Email>
+            <Contenido>¿Tienen gatos disponibles?</Contenido>
+            <Fecha>2025-11-02</Fecha>
+        </Mensaje>
+    </Mensajes>
+</ProtectoraAdoptaDos>

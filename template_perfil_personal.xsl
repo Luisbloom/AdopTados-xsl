@@ -18,7 +18,7 @@
                 </p>
         </header>
 
-        <img id="user-avatar" src="img/conejo1.jpg" alt="Avatar del usuario"/>
+        <img id="user-avatar" src="img/avatar.jpg" alt="Avatar del usuario"/>
 
         <main class="profile-body">
             
@@ -84,22 +84,9 @@
             <xsl:with-param name="class">btn-light-green</xsl:with-param>
             <xsl:with-param name="icon">🐾</xsl:with-param>
         </xsl:call-template>
-        
-        <xsl:call-template name="render-button">
-            <xsl:with-param name="node" select="enlace_editar_perfil"/>
-            <xsl:with-param name="class">btn-light-gray</xsl:with-param>
-            <xsl:with-param name="icon">⚙️</xsl:with-param>
-        </xsl:call-template>
     </div>
 
     <div class="action-buttons-group bottom-actions">
-        <xsl:call-template name="render-button">
-            <xsl:with-param name="node" select="enlace_borrar_cuenta"/>
-            <xsl:with-param name="class">btn-red</xsl:with-param>
-            <xsl:with-param name="id">borrar-cuenta-btn</xsl:with-param>
-            <xsl:with-param name="icon">🗑️</xsl:with-param>
-        </xsl:call-template>
-        
         <xsl:call-template name="render-button">
             <xsl:with-param name="node" select="enlace_cerrar_sesion"/>
             <xsl:with-param name="class">btn-red</xsl:with-param>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="template_contacto.xsl"?>
+
+<ContactoPage>
+    <DatosContacto>
+        <Titulo>Contacto</Titulo>
+        <Descripcion>
+            Si tienes dudas, sugerencias o deseas colaborar con AdoptaDos,
+            puedes enviarnos un mensaje mediante este formulario.
+        </Descripcion>
+    </DatosContacto>
+
+    <Formulario>
+        <Campo id="nombre" etiqueta="Nombre completo" />
+        <Campo id="email" etiqueta="Correo electrónico" />
+        <Campo id="mensaje" etiqueta="Mensaje" tipo="textarea" />
+    </Formulario>
+
+    <InfoExtra>
+        <Telefono>+34 600 123 456</Telefono>
+        <Email>soporte@adoptados.com</Email>
+        <Direccion>Calle Esperanza, 42 – Madrid</Direccion>
+    </InfoExtra>
+</ContactoPage>

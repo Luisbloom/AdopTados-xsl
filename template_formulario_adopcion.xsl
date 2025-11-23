@@ -6,7 +6,7 @@
 <html>
     <head>
         <title><xsl:value-of select="titulo"/></title>
-        <link rel="stylesheet" type="text/css" href="css/formulario_adopcion.css" />
+        <link rel="stylesheet" type="text/css" href="css/styles.css" />
         <script src="js/logica_adopciones.js" defer="defer"></script> 
     </head>
     <body>

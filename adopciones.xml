@@ -37,5 +37,10 @@
             <ParejaRef id_pareja="p1"/>
             <FechaAdopcion>2024-11-01</FechaAdopcion>
         </Adopcion>
+        <Adopcion>
+            <AnimalRef id_animal="a3"/>
+            <ParejaRef id_pareja="p1"/>
+            <FechaAdopcion>2025-01-10</FechaAdopcion>
+        </Adopcion>
     </Adopciones>
 </ProtectoraAdoptaDos>

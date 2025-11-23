@@ -1,0 +1,185 @@
+/* ==================================== */
+/* 1. VARIABLES Y BASE */
+/* ==================================== */
+:root {
+    --primary-color: #38761d;
+    --primary-dark: #2e5f17;
+    --secondary-color: #6aa84f;
+    --secondary-light: #cfe9c7;
+
+    --text-color: #333;
+    --text-light: #666;
+
+    --bg-light: #f4fff4;
+    --box-bg: #ffffff;
+
+    --border-color: #d2e4cb;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-light);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+/* ==================================== */
+/* 2. NAVBAR */
+/* ==================================== */
+.site-header {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 25px;
+    box-sizing: border-box;
+}
+
+.site-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.site-logo span {
+    margin-left: 5px;
+}
+
+.site-nav {
+    display: flex;
+    gap: 25px;
+}
+
+.site-nav a {
+    color: white;
+    font-size: 0.95em;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.site-nav a:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Responsivo */
+@media (max-width: 700px) {
+    .site-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .site-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+}
+
+/* ==================================== */
+/* 3. CONTENEDOR PRINCIPAL */
+/* ==================================== */
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: var(--box-bg);
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.container h1 {
+    color: var(--primary-dark);
+    margin-top: 0;
+    font-size: 2em;
+}
+
+/* ==================================== */
+/* 4. FORMULARIO DE CONTACTO */
+/* ==================================== */
+form {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+label {
+    font-weight: bold;
+    color: var(--primary-dark);
+    margin-bottom: 3px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--secondary-light);
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+input:focus,
+textarea:focus {
+    background-color: white;
+    border-color: var(--secondary-color);
+    outline: none;
+}
+
+textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+/* Botón */
+button[type="submit"] {
+    width: fit-content;
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--primary-dark);
+}
+
+/* ==================================== */
+/* 5. INFORMACIÓN ADICIONAL */
+/* ==================================== */
+h2 {
+    margin-top: 40px;
+    color: var(--primary-dark);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+ul li {
+    padding: 8px 0;
+    color: var(--text-light);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Estado del envío */
+#estado {
+    margin-top: 20px;
+    font-weight: bold;
+    color: var(--primary-dark);
+}

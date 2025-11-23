@@ -35,7 +35,6 @@
                 <div class="form-group">
                     <label for="contrasena">Contraseña *</label>
                     <input type="password" id="contrasena" required="required" autocomplete="current-password"/>
-                    <a href="{/inicio_sesion/enlaces/olvidaste}" class="forgot-link">¿Olvidaste tu contraseña?</a>
                 </div>
                 
                 <button type="submit" class="submit-button">

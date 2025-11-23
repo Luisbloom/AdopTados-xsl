@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="template_animales_disponibles.xsl"?>
+
+<ProtectoraAdoptaDos>
+
+    <!-- CARGAR EL JS DESDE EL XML (NO EN EL XSL) -->
+    <script href="js/animales_disponibles.js" />
+
+    <Animales>
+        <Animal id="P001">
+            <Nombre>Luna</Nombre>
+            <Especie>Perro</Especie>
+            <Raza>Labrador</Raza>
+            <Edad>3</Edad>
+            <Estado>Disponible</Estado>
+            <Imagen>img/luna.jpg</Imagen>
+        </Animal>
+
+        <Animal id="P002">
+            <Nombre>Milo</Nombre>
+            <Especie>Gato</Especie>
+            <Raza>Siamés</Raza>
+            <Edad>2</Edad>
+            <Estado>Disponible</Estado>
+            <Imagen>img/milo.jpg</Imagen>
+        </Animal>
+    </Animales>
+
+</ProtectoraAdoptaDos>

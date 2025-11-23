@@ -9,7 +9,7 @@
         <title><xsl:value-of select="datos_formulario/titulo"/></title>
         
         <xsl:for-each select="datos_formulario/clases_css/archivo">
-            <link rel="stylesheet" type="text/css" href="css/registro_animal.css"/> 
+            <link rel="stylesheet" type="text/css" href="css/styles.css"/> 
         </xsl:for-each>
     </head>
 <body>
