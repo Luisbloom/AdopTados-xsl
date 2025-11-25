@@ -84,7 +84,7 @@
                 <img src="img/conejo1.jpg" alt="Imagen de {Nombre}"/>
             </xsl:when>
             <xsl:when test="position() = 3">
-                <img src="img/perro1.webp" alt="Imagen de {Nombre}"/>
+                <img src="img/perro5.jpg" alt="Imagen de {Nombre}"/>
             </xsl:when>
         </xsl:choose>
 

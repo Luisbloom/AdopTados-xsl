@@ -1,100 +1,119 @@
-// logica_crear_cuenta.js
+// =======================
+// FUNCIONES DE USUARIO
+// =======================
 
-const XML_STORAGE_KEY = 'usuariosXMLData'; 
-const XML_URL = 'crear_cuenta.xml'; 
-const REDIRECT_URL = 'iniciar_sesion.xml'; 
-
-/**
- * Función para manejar el envío del formulario y almacenar el nuevo usuario.
- */
-function manejarRegistro(event) {
-    event.preventDefault(); 
-
-    const form = document.getElementById('registroForm');
-    
-    // Obtener valores
-    const nombre = document.getElementById('nombre').value;
-    const apellidos = document.getElementById('apellidos').value;
-    const email = document.getElementById('email').value;
-    const telefono = document.getElementById('telefono').value;
-    const direccion = document.getElementById('direccion').value;
-    const contrasena = document.getElementById('contrasena').value;
-    const repetirContrasena = document.getElementById('repetirContrasena').value;
-
-    if (contrasena !== repetirContrasena) {
-        alert("Las contraseñas no coinciden. Por favor, revísalas.");
-        return;
-    }
-    
-    const xmlString = localStorage.getItem(XML_STORAGE_KEY);
-    const parser = new DOMParser();
-    let xmlDoc = parser.parseFromString(xmlString, 'application/xml');
-
-    // 1. Determinar el nuevo ID (u1, u2, u3...)
-    let ultimoId = 0;
-    const usuariosExistentes = xmlDoc.getElementsByTagName('usuario'); 
-    for (let i = 0; i < usuariosExistentes.length; i++) {
-        const currentId = parseInt(usuariosExistentes[i].getAttribute('id').replace('u', '')) || 0;
-        if (currentId > ultimoId) {
-            ultimoId = currentId;
-        }
-    }
-    const nuevoId = ultimoId + 1;
-
-    // 2. Crear el nuevo nodo <usuario> (XML)
-    const nuevoUsuario = xmlDoc.createElement('usuario');
-    nuevoUsuario.setAttribute('id', `u${nuevoId}`);
-
-    const campos = { nombre, apellidos, email, telefono, direccion, contrasena };
-    
-    for (const key in campos) {
-        const elem = xmlDoc.createElement(key);
-        elem.textContent = campos[key];
-        nuevoUsuario.appendChild(elem);
-    }
-    
-    // 3. Añadir al nodo contenedor (<usuarios> o la raíz)
-    let nodoUsuarios = xmlDoc.getElementsByTagName('usuarios')[0];
-    
-    if (!nodoUsuarios) {
-        nodoUsuarios = xmlDoc.documentElement; 
-    }
-    
-    nodoUsuarios.appendChild(nuevoUsuario);
-
-    // 4. Guardar el XML actualizado
-    const serializer = new XMLSerializer();
-    const nuevoXmlString = serializer.serializeToString(xmlDoc);
-    localStorage.setItem(XML_STORAGE_KEY, nuevoXmlString);
-    
-    alert(`¡Perfil creado y guardado! ID: u${nuevoId}. Redirigiendo a inicio de sesión.`);
-
-    form.reset();
-    window.location.href = REDIRECT_URL;
+// Cargar usuarios desde localStorage
+function cargarUsuarios() {
+    const data = localStorage.getItem("usuarios");
+    return data ? JSON.parse(data) : [];
 }
 
-/**
- * Carga el XML base si no está en localStorage.
- */
-document.addEventListener('DOMContentLoaded', () => {
-    if (!localStorage.getItem(XML_STORAGE_KEY)) {
-        fetch(XML_URL)
-            .then(response => {
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                return response.text();
-            })
-            .then(xmlText => {
-                localStorage.setItem(XML_STORAGE_KEY, xmlText);
-            })
-            .catch(error => console.error('Error al inicializar el XML base:', error));
+// Guardar usuarios en localStorage
+function guardarUsuarios(usuarios) {
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+}
+
+// Registrar usuario nuevo
+function registrarUsuario(username, password) {
+    const usuarios = cargarUsuarios();
+
+    // Comprobar si ya existe
+    const existe = usuarios.find(u => u.username === username);
+
+    if (existe) {
+        return { ok: false, msg: "El usuario ya existe." };
     }
-    
-    const observer = new MutationObserver((mutationsList, observer) => {
-        const formAfterXSLT = document.getElementById('registroForm');
-        if (formAfterXSLT) {
-            formAfterXSLT.addEventListener('submit', manejarRegistro);
-            observer.disconnect();
+
+    usuarios.push({ username, password });
+    guardarUsuarios(usuarios);
+
+    return { ok: true, msg: "Cuenta creada correctamente." };
+}
+
+// Iniciar sesión
+function loginUsuario(username, password) {
+    const usuarios = cargarUsuarios();
+
+    const user = usuarios.find(u => u.username === username && u.password === password);
+
+    if (!user) {
+        return { ok: false, msg: "Usuario o contraseña incorrectos." };
+    }
+
+    // Guardar sesión
+    localStorage.setItem("sesion_activa", username);
+
+    return { ok: true, msg: "Sesión iniciada." };
+}
+
+// Cerrar sesión
+function cerrarSesion() {
+    localStorage.removeItem("sesion_activa");
+}
+
+// Comprobar sesión activa
+function obtenerSesion() {
+    return localStorage.getItem("sesion_activa");
+}
+
+// =======================
+// MANEJO DE FORMULARIOS
+// =======================
+
+// FORM: registro
+const formRegistro = document.getElementById("form-registro");
+if (formRegistro) {
+    formRegistro.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const usuario = document.getElementById("reg-usuario").value.trim();
+        const password = document.getElementById("reg-password").value.trim();
+
+        const r = registrarUsuario(usuario, password);
+
+        alert(r.msg);
+
+        if (r.ok) formRegistro.reset();
+    });
+}
+
+// FORM: login
+const formLogin = document.getElementById("form-login");
+if (formLogin) {
+    formLogin.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const usuario = document.getElementById("log-usuario").value.trim();
+        const password = document.getElementById("log-password").value.trim();
+
+        const r = loginUsuario(usuario, password);
+
+        alert(r.msg);
+
+        if (r.ok) {
+            // Redirige a una página protegida si quieres
+            window.location.href = "index.html";
         }
     });
-    observer.observe(document.body, { childList: true, subtree: true });
-});
+}
+
+// Mostrar usuario logueado
+const panelUsuario = document.getElementById("usuario-logueado");
+if (panelUsuario) {
+    const sesion = obtenerSesion();
+    if (sesion) {
+        panelUsuario.textContent = "Sesión iniciada como: " + sesion;
+    } else {
+        panelUsuario.textContent = "No hay sesión activa.";
+    }
+}
+
+// Botón cerrar sesión
+const btnLogout = document.getElementById("logout");
+if (btnLogout) {
+    btnLogout.addEventListener("click", () => {
+        cerrarSesion();
+        alert("Sesión cerrada.");
+        window.location.reload();
+    });
+}
