@@ -2,7 +2,7 @@ const XML_STORAGE_KEY = 'usuariosXMLData';
 const REDIRECT_URL = 'iniciar_sesion.xml'; 
 
 /**
- * Función para manejar el envío del formulario y almacenar el nuevo usuario.
+ * Maneja el envío del formulario y guarda el usuario en LocalStorage
  */
 function manejarRegistro(event) {
     event.preventDefault(); 
@@ -39,7 +39,7 @@ function manejarRegistro(event) {
     }
     const nuevoId = ultimoId + 1;
 
-    // Crear el nuevo nodo <usuario> (XML)
+    // Crear el nodo <usuario>
     const nuevoUsuario = xmlDoc.createElement('usuario');
     nuevoUsuario.setAttribute('id', `u${nuevoId}`);
 
@@ -50,14 +50,14 @@ function manejarRegistro(event) {
         nuevoUsuario.appendChild(elem);
     }
 
-    // Añadir al nodo contenedor (<usuarios>)
+    // Añadir al nodo contenedor <usuarios>
     let nodoUsuarios = xmlDoc.getElementsByTagName('usuarios')[0];
     if (!nodoUsuarios) {
         nodoUsuarios = xmlDoc.documentElement; 
     }
     nodoUsuarios.appendChild(nuevoUsuario);
 
-    // Guardar el XML actualizado en localStorage
+    // Guardar XML actualizado en LocalStorage
     const serializer = new XMLSerializer();
     const nuevoXmlString = serializer.serializeToString(xmlDoc);
     localStorage.setItem(XML_STORAGE_KEY, nuevoXmlString);
@@ -68,8 +68,8 @@ function manejarRegistro(event) {
 }
 
 /**
- * Inicializa el XML base en localStorage si no existe.
- * Esto reemplaza el fetch y asegura que funcione en cualquier PC o GitHub Pages.
+ * Inicializa LocalStorage con XML base si no existe.
+ * Esto elimina la dependencia de fetch y funciona en cualquier PC
  */
 document.addEventListener('DOMContentLoaded', () => {
     if (!localStorage.getItem(XML_STORAGE_KEY)) {
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(XML_STORAGE_KEY, xmlBase);
     }
 
-    // Observador para el formulario después de aplicar XSLT
+    // Observador para el formulario después de XSLT
     const observer = new MutationObserver(() => {
         const formAfterXSLT = document.getElementById('registroForm');
         if (formAfterXSLT) {
